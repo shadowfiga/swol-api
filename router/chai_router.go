@@ -3,7 +3,6 @@ package router
 import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
-	"log"
 	"net/http"
 )
 
@@ -40,5 +39,5 @@ func (*chaiRouter) Delete(url string, f func(w http.ResponseWriter, r *http.Requ
 
 func (*chaiRouter) Serve(port string) {
 	fmt.Printf("Server running on port %s\n", port)
-	log.Fatal(http.ListenAndServe(port, chaiDispatcher))
+	panic(http.ListenAndServe(port, chaiDispatcher))
 }

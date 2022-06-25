@@ -1,6 +1,11 @@
 package controller
 
-import service "swol-api/service"
+import (
+	"encoding/json"
+	"net/http"
+	"swol-api/entity"
+	service "swol-api/service"
+)
 
 type AuthController interface {
 	Register()
@@ -8,6 +13,7 @@ type AuthController interface {
 	Logout()
 	Refresh()
 	Verify()
+	All(w http.ResponseWriter, r *http.Request)
 }
 
 var (
@@ -39,4 +45,14 @@ func (*authController) Refresh() {
 
 func (*authController) Verify() {
 
+}
+
+func (*authController) All(w http.ResponseWriter, r *http.Request) {
+	accounts := authService.All()
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(struct {
+		Accounts []entity.Account `json:"accounts"`
+	}{
+		Accounts: accounts,
+	})
 }

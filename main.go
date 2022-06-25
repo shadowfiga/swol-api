@@ -2,12 +2,16 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"swol-api/config"
+	"swol-api/controller"
 	"swol-api/router"
 )
 
 var (
-	appRouter router.Router = router.NewChaiRouter()
+	appRouter      = router.NewChaiRouter()
+	authController = controller.NewAuthController()
 )
 
 func main() {
@@ -19,5 +23,6 @@ func main() {
 			Success: true,
 		})
 	})
-	appRouter.Serve(":8000")
+	appRouter.Get("/accounts", authController.All)
+	appRouter.Serve(fmt.Sprintf(":%s", config.Conf.Port))
 }
